@@ -1,0 +1,36 @@
+#include <iostream>
+#include <string>
+#include <bitset>
+#include <string>
+#include <algorithm>
+using namespace std;
+int main()
+{
+    string s, s1;
+    cin >> s;
+    int n3 = s.length();
+    cin >> s1;
+    bitset<31> a{s};
+    bitset<31> b{s1};
+    bitset<31> c;
+    int sum = INT32_MAX;
+    for (int i = 0; i < (1<<n3); ++i) {
+        bitset<31> d = i;
+        if (d.count() > sum)
+            continue;
+        c = a;
+        c ^= d;
+        c ^= (d << 1);
+        c ^= (d >> 1);
+        c[n3] = 0;
+        if (c == b)
+        {
+            if (sum > d.count())
+                sum = d.count();
+        }
+    }
+    if (sum == INT32_MAX)
+        cout << "impossible" << endl;
+    else
+        cout << sum << endl;
+}

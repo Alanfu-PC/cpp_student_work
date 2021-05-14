@@ -1,0 +1,57 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <bitset>
+#include <algorithm>
+using namespace std;
+int main()
+{
+    int N;
+    cin >> N;
+    bitset<15> a[15];
+    bitset<15> b[16];
+    bitset<15> c[15];
+    bitset<15> d;
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; ++j)
+        {
+            char tmp;
+            cin >> tmp;
+            a[i][j] = (tmp == 'w');
+        }
+//    for (int i = 0; i < N; ++i) {
+//        for (int j = 0; j < N; ++j) {
+//           cout << a[i][j];
+//
+//        }
+//    }
+    int cnt{INT32_MAX};
+    for (int i = 0; i < (1<<N); ++i) {
+        int cnt2{0};
+        copy(a, a + 15, b);
+        d = i;
+        cnt2 += d.count();
+        b[0] ^= d;
+        b[0] ^= (d << 1);
+        b[0] ^= (d >> 1);
+        b[0][N] = 0;
+        b[1] ^= d;
+        for (int j = 1; j < N; ++j) {
+            d = b[j-1];
+            cnt2 += d.count();
+            b[j] ^= d;
+            b[j] ^= (d << 1);
+            b[j] ^= (d >> 1);
+            b[j][N] = 0;
+            b[j+1] ^= d;
+        }
+        if (b[N-1].count() == 0){
+            cnt = min(cnt, cnt2);
+        }
+
+    }
+    if (cnt != INT32_MAX)
+        cout << cnt << endl;
+    else
+        cout << "inf" << endl;
+}
